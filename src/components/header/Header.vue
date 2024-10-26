@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import {
   FlFilledNavigation,
   BsArrowLeftCircleFill,
+  BsHeartFill,
 } from "@kalimahapps/vue-icons";
-import { ref } from "vue";
+import { useGameStore } from "@/store/game";
 
+const gameStore = useGameStore();
 const menuIsOpen = ref(false);
 const menuOptionSelected = ref("Names");
 
@@ -15,10 +18,14 @@ const openMenu = () => {
 const closeMenu = () => {
   menuIsOpen.value = false;
 };
+
+const decreaseLife = () => {
+  gameStore.decreaseLife();
+};
 </script>
 <template>
   <header>
-    <div>
+    <div class="header-container">
       <nav class="navbar">
         <div class="hamburger-icon">
           <FlFilledNavigation class="icon" @click="openMenu" />
@@ -34,17 +41,57 @@ const closeMenu = () => {
             <li @click="menuOptionSelected = 'Countries'">Countries</li>
             <li @click="menuOptionSelected = 'Colros'">Colros</li>
             <li @click="menuOptionSelected = 'Objects'">Objects</li>
+            <li @click="decreaseLife">decreaseLife</li>
           </ul>
         </div>
         <div class="title-container">
           <h1 class="title">{{ menuOptionSelected }}</h1>
         </div>
       </nav>
+      <div class="life-container">
+        <span class="life-bar">
+          <span class="life" :style="{ width: gameStore.lifecount + '%' }"></span>
+        </span>
+        <BsHeartFill class="icon-heart" />
+      </div>
     </div>
   </header>
 </template>
 
 <style scoped>
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.life-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.life-bar {
+  display: block;
+  width: 150px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 5px;
+}
+
+.life-bar .life{
+  display: block;
+  height: 100%;
+  background-color: rgb(248, 67, 35);
+  border-radius: 5px;
+  transition: width .3s ease;
+}
+.icon-heart {
+  font-size: 30px;
+  cursor: pointer;
+  fill: rgb(248, 67, 35);
+}
 
 .navbar {
   position: relative;
