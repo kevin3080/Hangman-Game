@@ -4,6 +4,7 @@ import { useGameStore } from "../../store/game";
 const gameStore = useGameStore();
 
 const handleLetterClick = (letter: string) => {
+  gameStore.addPressedLetter(letter);
   gameStore.guessLetter(letter);
 };
 </script>
@@ -17,6 +18,9 @@ const handleLetterClick = (letter: string) => {
           v-for="letter in 'QWERTYUIOP'"
           :key="letter"
           @click="handleLetterClick(letter)"
+          :data-pressed="
+            gameStore.pressedLetters.includes(letter) ? true : undefined
+          "
         >
           {{ letter }}
         </div>
@@ -27,6 +31,9 @@ const handleLetterClick = (letter: string) => {
           v-for="letter in 'ASDFGHJKL'"
           :key="letter"
           @click="handleLetterClick(letter)"
+          :data-pressed="
+            gameStore.pressedLetters.includes(letter) ? true : undefined
+          "
         >
           {{ letter }}
         </div>
@@ -37,6 +44,9 @@ const handleLetterClick = (letter: string) => {
           v-for="letter in 'ZXCVBNM'"
           :key="letter"
           @click="handleLetterClick(letter)"
+          :data-pressed="
+            gameStore.pressedLetters.includes(letter) ? true : undefined
+          "
         >
           {{ letter }}
         </div>

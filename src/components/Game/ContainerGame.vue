@@ -5,7 +5,7 @@ import { useGameStore } from "../../store/game";
 const gameStore = useGameStore();
 
 let word = computed(() => gameStore.correctWord);
-const wordList = word.value.split(" ");
+const wordList = computed(() => word.value.split(" "));
 const guessedLetters = computed(() => gameStore.guessedLetters);
 </script>
 
@@ -24,13 +24,13 @@ const guessedLetters = computed(() => gameStore.guessedLetters);
                 class="letter"
                 :class="{
                   'letter--flipped': guessedLetters.includes(
-                    letter.toUpperCase()
+                    letter.toLowerCase()
                   ),
                 }"
               >
                 <span
                   class="letter__text"
-                  v-if="guessedLetters.includes(letter.toUpperCase())"
+                  v-if="guessedLetters.includes(letter.toLowerCase())"
                   >{{ letter }}</span
                 >
               </div>

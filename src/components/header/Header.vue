@@ -4,12 +4,15 @@ import {
   FlFilledNavigation,
   BsArrowLeftCircleFill,
   BsHeartFill,
+  IoReload,
 } from "@kalimahapps/vue-icons";
 import { useGameStore } from "@/store/game";
+import type { IData } from "@/store/data";
 
 const gameStore = useGameStore();
 const menuIsOpen = ref(false);
 const menuOptionSelected = ref("Names");
+const reload = ref(false);
 
 const openMenu = () => {
   menuIsOpen.value = true;
@@ -19,8 +22,10 @@ const closeMenu = () => {
   menuIsOpen.value = false;
 };
 
-const decreaseLife = () => {
-  gameStore.decreaseLife();
+const selectMenuOption = (option: string) => {
+  menuOptionSelected.value = option;
+  gameStore.setCategory(option.toLowerCase() as keyof IData);
+  closeMenu();
 };
 </script>
 <template>
@@ -37,11 +42,10 @@ const decreaseLife = () => {
             </button>
           </div>
           <ul class="list-menu">
-            <li @click="menuOptionSelected = 'Names'">Names</li>
-            <li @click="menuOptionSelected = 'Countries'">Countries</li>
-            <li @click="menuOptionSelected = 'Colros'">Colros</li>
-            <li @click="menuOptionSelected = 'Objects'">Objects</li>
-            <li @click="decreaseLife">decreaseLife</li>
+            <li @click="selectMenuOption('Names')">Names</li>
+            <li @click="selectMenuOption('Countries')">Countries</li>
+            <li @click="selectMenuOption('Colors')">Colros</li>
+            <li @click="selectMenuOption('Objects')">Objects</li>
           </ul>
         </div>
         <div class="title-container">
@@ -49,8 +53,26 @@ const decreaseLife = () => {
         </div>
       </nav>
       <div class="life-container">
+        <IoReload class="icon-reload" @click="reload = true" />
+        <div class="modal" v-if="reload">
+          <div class="modal-content">
+            <h3>¿Seguro que desea reiniciar el juego?</h3>
+            <button
+              class="button-reload"
+              @click="gameStore.resetGame(), (reload = false)"
+            >
+              Reiniciar
+            </button>
+            <button class="button-cancel" @click="reload = false">
+              Cancelar
+            </button>
+          </div>
+        </div>
         <span class="life-bar">
-          <span class="life" :style="{ width: gameStore.lifecount + '%' }"></span>
+          <span
+            class="life"
+            :style="{ width: gameStore.lifecount + '%' }"
+          ></span>
         </span>
         <BsHeartFill class="icon-heart" />
       </div>
@@ -59,6 +81,55 @@ const decreaseLife = () => {
 </template>
 
 <style scoped>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffffd7;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+
+  & h3 {
+    color: #333;
+    margin-bottom: 1rem;
+  }
+}
+
+.modal-content button {
+  padding: 0.5rem 1rem;
+  background-color: #af4c4c;
+  color: white;
+  margin: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3 ease;
+
+  &:hover {
+    background-color: #f44336;
+  }
+
+  &.button-cancel {
+    background-color: #555;
+
+    &:hover {
+      background-color: #333;
+    }
+  }
+}
+
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -72,6 +143,19 @@ const decreaseLife = () => {
   gap: 20px;
 }
 
+.icon-reload {
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  & * {
+    color: #e4e4e4;
+  }
+
+  &:hover {
+    transform: rotate(20deg);
+  }
+}
+
 .life-bar {
   display: block;
   width: 150px;
@@ -80,12 +164,12 @@ const decreaseLife = () => {
   border-radius: 5px;
 }
 
-.life-bar .life{
+.life-bar .life {
   display: block;
   height: 100%;
   background-color: rgb(248, 67, 35);
   border-radius: 5px;
-  transition: width .3s ease;
+  transition: width 0.3s ease;
 }
 .icon-heart {
   font-size: 30px;
