@@ -61,6 +61,7 @@ const handleLetterClick = (letter: string) => {
   font-size: 14px;
   font-family: sans-serif;
   width: 100%;
+  margin-bottom: 20%;
 
   & > div {
     display: grid;

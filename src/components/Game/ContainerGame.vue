@@ -23,14 +23,14 @@ const guessedLetters = computed(() => gameStore.guessedLetters);
               <div
                 class="letter"
                 :class="{
-                  'letter--flipped': guessedLetters.includes(
+                  'letter--flipped': guessedLetters.has(
                     letter.toLowerCase()
                   ),
                 }"
               >
                 <span
                   class="letter__text"
-                  v-if="guessedLetters.includes(letter.toLowerCase())"
+                  v-if="guessedLetters.has(letter.toLowerCase())"
                   >{{ letter }}</span
                 >
               </div>
@@ -87,6 +87,7 @@ const guessedLetters = computed(() => gameStore.guessedLetters);
 .game__word {
   display: flex;
   gap: 0.2rem;
+  flex-wrap: wrap;
 }
 
 .game__letter {

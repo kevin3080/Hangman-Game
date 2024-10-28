@@ -18,23 +18,27 @@ const gameOver = computed(() => life.value === 0);
 </script>
 
 <template>
-  <Header />
-  <main>
-    <ContainerGame />
-    <Keyboard />
-    <transition name="showModal">
-      <div v-if="gameOver" class="modal">
-        <div class="modal-content">
-          <h2>Game Over</h2>
-          <p>Has perdido todas tus vidas.</p>
-          <button @click="gameStore.resetGame()">Reiniciar Juego</button>
-        </div>
-      </div>
-    </transition>
-  </main>
+  <div class="app-container">
+      <Header />
+      <main>
+        <ContainerGame />
+        <Keyboard />
+        <transition name="showModal">
+          <div v-if="gameOver" class="modal">
+            <div class="modal-content">
+              <h2>Game Over</h2>
+              <p>Has perdido todas tus vidas.</p>
+              <button @click="gameStore.resetGame()">Reiniciar Juego</button>
+            </div>
+          </div>
+        </transition>
+      </main>
+  </div>
 </template>
 
 <style scoped>
+
+
 .showModal-enter-active,
 .showModal-leave-active {
   transition: opacity 0.3s ease, transform 0.3s ease;

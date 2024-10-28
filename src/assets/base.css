@@ -46,13 +46,16 @@
   font-weight: normal;
 }
 
+
 body {
+  background: url('../assets/background.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  min-width: 250px;
   position: relative;
   min-height: 100vh;
   color: var(--color-text);
-  background: url('../assets/background.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
   line-height: 1.6;
   font-family:
     Inter,
@@ -72,10 +75,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-
 }
-
-body::before {
+ body::before {
   content: '';
   position: absolute;
   top: 0;

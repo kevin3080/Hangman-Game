@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import {
   FlFilledNavigation,
   BsArrowLeftCircleFill,
@@ -11,11 +11,21 @@ import type { IData } from "@/store/data";
 
 const gameStore = useGameStore();
 const menuIsOpen = ref(false);
-const menuOptionSelected = ref("Names");
+const menuOptionSelected = ref("Countries");
 const reload = ref(false);
+const isScaling = ref(false);
+
+watch( () => gameStore.lifecount, (newVal, oldVal) => {
+  if (newVal < oldVal) {
+    isScaling.value = true;
+    setTimeout(() => {
+      isScaling.value = false;
+    }, 300);
+  }
+});
 
 const openMenu = () => {
-  menuIsOpen.value = true;
+  !menuIsOpen.value ? (menuIsOpen.value = true) : (menuIsOpen.value = false);
 };
 
 const closeMenu = () => {
@@ -52,8 +62,9 @@ const selectMenuOption = (option: string) => {
           <h1 class="title">{{ menuOptionSelected }}</h1>
         </div>
       </nav>
-      <div class="life-container">
+      <div class="status-container">
         <IoReload class="icon-reload" @click="reload = true" />
+        <p class="score">Score: {{ gameStore.score }}</p>
         <div class="modal" v-if="reload">
           <div class="modal-content">
             <h3>¿Seguro que desea reiniciar el juego?</h3>
@@ -68,13 +79,13 @@ const selectMenuOption = (option: string) => {
             </button>
           </div>
         </div>
-        <span class="life-bar">
+        <span class="life-bar" :class="{ 'scale-effect': isScaling }">
           <span
             class="life"
-            :style="{ width: gameStore.lifecount + '%' }"
+            :style="{ width: gameStore.lifecount + '%'}"
           ></span>
         </span>
-        <BsHeartFill class="icon-heart" />
+        <BsHeartFill class="icon-heart" :class="{ 'scale-effect': isScaling }" />
       </div>
     </div>
   </header>
@@ -137,10 +148,16 @@ const selectMenuOption = (option: string) => {
   width: 100%;
 }
 
-.life-container {
+.status-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
+}
+
+.score{ 
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .icon-reload {
@@ -156,12 +173,29 @@ const selectMenuOption = (option: string) => {
   }
 }
 
+@keyframes lifeEffect {
+  0% {
+    transform: scale(1);
+    fill: rgb(248, 67, 35);
+  }
+  50% {
+    transform: scale(1.2);
+    fill: #ffffff;
+  }
+  100% {
+    transform: scale(1);
+    fill: rgb(248, 67, 35);
+  }
+}
+
+
 .life-bar {
-  display: block;
+  display: inline-block;
   width: 150px;
   height: 10px;
   background-color: #ccc;
   border-radius: 5px;
+  transition: lifeEffect 0.3s ease;
 }
 
 .life-bar .life {
@@ -171,6 +205,12 @@ const selectMenuOption = (option: string) => {
   border-radius: 5px;
   transition: width 0.3s ease;
 }
+
+.scale-effect .life,
+.scale-effect.icon-heart {
+  animation: lifeEffect 0.3s ease;
+}
+
 .icon-heart {
   font-size: 30px;
   cursor: pointer;
@@ -185,6 +225,7 @@ const selectMenuOption = (option: string) => {
   height: 60px;
   color: #fff;
   padding: 0 20px;
+
 }
 
 .hamburger-icon {
@@ -250,5 +291,11 @@ const selectMenuOption = (option: string) => {
   background-color: #fff;
   color: #333;
   cursor: pointer;
+}
+
+@media (max-width: 590px) {
+  .header-container{
+    display: block;
+  }
 }
 </style>
