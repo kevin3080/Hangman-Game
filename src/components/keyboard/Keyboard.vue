@@ -11,7 +11,6 @@ const handleLetterClick = (letter: string) => {
 
 <template>
   <div class="keyboard">
-    <div>
       <div class="keyboard__row">
         <div
           class="key--letter"
@@ -52,32 +51,26 @@ const handleLetterClick = (letter: string) => {
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <style scoped>
 .keyboard {
   text-align: center;
-  font-size: 14px;
+  font-size: clamp(12px, 2vw, 18px);
   font-family: sans-serif;
-  width: 100%;
-  margin-bottom: 20%;
-
-  & > div {
-    display: grid;
-    grid-template-columns: 1fr;
-    place-items: center;
-  }
+  margin: 0 auto;
 }
 
 .keyboard__row {
-  display: inline-block;
-  height: 3em;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 0.2em;
+  height: clamp(3.5em, 2vw, 3em);
   margin: 0.2em;
 }
 
-.keyboard__row > * {
-  position: relative;
+.key--letter {
   background: #333;
   text-align: center;
   color: #eee;
@@ -85,14 +78,15 @@ const handleLetterClick = (letter: string) => {
   border-radius: 0.3em;
   margin: 0.2em;
   padding: 0.2em;
-  width: 3.3em;
-  height: 100%;
+  width: clamp(2em, 6vw, 3.3em);
+  height: clamp(2.5em, 6vw, 3.3em);
   box-sizing: border-box;
   cursor: pointer;
   -webkit-user-select: none;
   border: 1px solid #444;
   box-shadow: 0 0.2em 0 0.05em #222;
   border-bottom-color: #555;
+  font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 .keyboard__row > div[data-pressed],
