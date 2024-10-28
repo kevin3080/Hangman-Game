@@ -101,4 +101,16 @@ const handleLetterClick = (letter: string) => {
 .key--letter {
   line-height: 2.8em;
 }
+
+@media (max-width: 470px) {
+  .keyboard__row{
+    gap: 0;
+    margin: 0;
+  }
+
+  .key--letter{
+    margin: 0;
+    padding: 0;
+  }
+}
 </style>
