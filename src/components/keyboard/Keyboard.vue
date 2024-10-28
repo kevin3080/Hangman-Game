@@ -55,10 +55,10 @@ const handleLetterClick = (letter: string) => {
 
 <style scoped>
 .keyboard {
+  margin-top: 20px;
   text-align: center;
   font-size: clamp(12px, 2vw, 18px);
   font-family: sans-serif;
-  margin: 0 auto;
 }
 
 .keyboard__row {
@@ -78,8 +78,8 @@ const handleLetterClick = (letter: string) => {
   border-radius: 0.3em;
   margin: 0.2em;
   padding: 0.2em;
-  width: clamp(2em, 6vw, 3.3em);
-  height: clamp(2.5em, 6vw, 3.3em);
+  width: clamp(3.3em, 8vw, 3.3em);
+  height: clamp(3em, 8vw, 3.3em);
   box-sizing: border-box;
   cursor: pointer;
   -webkit-user-select: none;

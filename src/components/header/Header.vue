@@ -294,7 +294,15 @@ const selectMenuOption = (option: string) => {
 }
 
 @media (max-width: 590px) {
+
+  header{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .header-container{
+    width: 80%;
     display: block;
   }
 }
