@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { defineStore } from "pinia";
 import { data, type IData } from "./data";
 
@@ -11,6 +11,7 @@ export const useGameStore = defineStore("game", () => {
   const guessedLetters = ref<Set<string>>(new Set());
   const score = ref<number>(0);
   const pointsPerLetter = 50;
+  const gameWin = ref<boolean>(false);
 
 
   const incrementScore = (guessedLetter: string) => {
@@ -26,6 +27,19 @@ export const useGameStore = defineStore("game", () => {
   };
 
   console.log(correctWord.value);
+
+  watch(guessedLetters, (newVal) => {
+    const setCorrectWord = new Set(correctWord.value.toLowerCase().split(" ").join("").split(""));
+
+    win(setCorrectWord, newVal);
+  },{deep: true});
+
+  const win = (correctWord: Set<string>, guessedLetters: Set<string>) => {
+    if(correctWord.size === guessedLetters.size) {
+      gameWin.value = true;
+    }
+  };
+
 
   const decreaseLife = () => {
     lifecount.value -= 10;
@@ -59,6 +73,7 @@ export const useGameStore = defineStore("game", () => {
     selectedWordIndex.value = Math.floor(Math.random() * words.value.length);
     correctWord.value = words.value[selectedWordIndex.value];
     score.value = 0;
+    gameWin.value = false;
   };
 
   const setCategory = (category: keyof IData) => {
@@ -78,5 +93,6 @@ export const useGameStore = defineStore("game", () => {
     setCategory,
     score,
     incrementScore,
+    gameWin
   };
 });

@@ -10,6 +10,12 @@ const gameStore = useGameStore();
 let life = computed(() => gameStore.lifecount);
 const gameOver = computed(() => life.value === 0);
 
+const titleGameOver = "Game Over";
+const messageGameOver = "Has perdido todas tus vidas.";
+
+const titleWin = "Felicidades";
+const messageWin = "Has completado el juego.";
+
 // watch(life, (newLife) => {
 //   if (newLife === 0) {
 //     gameStore.resetGame();
@@ -26,8 +32,18 @@ const gameOver = computed(() => life.value === 0);
         <transition name="showModal">
           <div v-if="gameOver" class="modal">
             <div class="modal-content">
-              <h2>Game Over</h2>
-              <p>Has perdido todas tus vidas.</p>
+              <h2>{{ titleGameOver }}</h2>
+              <p>{{ messageGameOver }}</p>
+              <button @click="gameStore.resetGame()">Reiniciar Juego</button>
+            </div>
+          </div>
+        </transition>
+        <transition name="showModal">
+          <div v-if="gameStore.gameWin === true" class="modal">
+            <div class="modal-content">
+              <h2>{{ titleWin }}</h2>
+              <p>{{ messageWin }}</p>
+              <p>Tu puntaje a sido de {{ gameStore.score }}</p>
               <button @click="gameStore.resetGame()">Reiniciar Juego</button>
             </div>
           </div>
